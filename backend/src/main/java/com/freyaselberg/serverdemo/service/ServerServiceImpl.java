@@ -36,10 +36,15 @@ public class ServerServiceImpl implements ServerService{
     public Server ping(String ipAddress) throws IOException {
         log.info("Attempting to ping server IP: {}", ipAddress);
         Server server = serverRepo.findByIpAddress(ipAddress);
-        InetAddress address = InetAddress.getByName(ipAddress);
-        server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
-        serverRepo.save(server);
-        return server;
+        try {
+            InetAddress address = InetAddress.getByName(ipAddress);
+            server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
+        } catch (Exception e) {
+            server.setStatus(Status.SERVER_DOWN);
+        } finally{
+            serverRepo.save(server);
+            return server;
+        }
     }
 
     @Override
@@ -67,14 +72,12 @@ public class ServerServiceImpl implements ServerService{
         return true;
     }
 
-    private String setServerImgUrl() {
-        String[] imageNames = {"basicServer.jpg",
+    public String setServerImgUrl() {
+        String[] imageNames = {"basicServer.png",
         "basicServer2.png", "basicServer3.png",
         "basicServer4.png"};
 
-        return this.getClass().getClassLoader()
-                .getResource("static/" +
-                        imageNames[new Random().nextInt(4)])
-                .toString();
+        return "src/main/resources/static/" +
+                        imageNames[new Random().nextInt(4)];
     }
 }

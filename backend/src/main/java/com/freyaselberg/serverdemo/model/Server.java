@@ -14,7 +14,7 @@ public class Server {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     @NotEmpty(message = "IP address can't be empty or null")
