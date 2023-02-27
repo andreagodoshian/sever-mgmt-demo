@@ -14,7 +14,7 @@ export class ServerService {
     // ^^NOTE: HttpClient **has** to be in app.module.ts
   }
 
-  private readonly apiUrl = 'any';
+  private readonly apiUrl = 'http://localhost:8080';
 
   //////////////////////////////////////////////////////
   // NOTE: $ in this case denotes an Observable
