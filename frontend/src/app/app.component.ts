@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, startWith } from 'rxjs/operators';
 import { DataState } from './enum/data-state.enum';
+import { Status } from './enum/status.enum';
 import { AppState } from './interface/app-state';
 import { CustomResponse } from './interface/custom-response';
 import { ServerService } from './service/server.service';
@@ -11,8 +12,14 @@ import { ServerService } from './service/server.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent implements OnInit {
   appState$: Observable<AppState<CustomResponse>>;
+  readonly DataState = DataState;
+  readonly Status = Status;
+  private filterSubject = new BehaviorSubject<string>("");
+  filterStatus$ = this.filterSubject.asObservable();
+  
 
   // part of JS, executed when instantiated
   // like Java, usually just for injecting dependencies
